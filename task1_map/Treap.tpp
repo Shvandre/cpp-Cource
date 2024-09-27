@@ -9,13 +9,7 @@ template <typename T, class C>
 struct Node;
 
 template <typename T, class C>
-using PNode = Node<T, C>*;
-
-template <typename T, class C>
-struct Node;
-
-template <typename T, class C>
-using PNode = Node<T, C>*;
+using PNode = std::shared_ptr<Node<T, C>>;
 
 template <typename T, class C>
 using PNodePair = std::pair<PNode<T, C>, PNode<T, C>>;
@@ -72,7 +66,7 @@ public:
     void insert(const T& key, const C& value) {
         if (is_present(key)) return;
         PNodePair<T, C> q = split(root, key);
-        auto t = new Node(key, value);
+        auto t = std::make_shared<Node<T, C>>(key, value);
         root = merge(q.first, merge(t, q.second));
     }
 
@@ -93,7 +87,7 @@ public:
         return false;
     }
     class Iterator {
-        friend class Treap;
+        friend class SearchingTree;
         PNode<T, C> cur;
         std::stack<PNode<T, C>> st;
         bool is_end = false;
@@ -155,7 +149,7 @@ public:
         }
     };
     Iterator begin() {
-        Iterator it = Iterator({}, root);
+        Iterator it({}, root);
         it.move_left();
         return it;
     }

@@ -2,7 +2,7 @@
 #include "Treap.tpp"
 
 int main() {
-    Treap<int, int> map;
+    SearchingTree<int, int> map;
     map.insert(1, 1);
     map.insert(2, 2);
     map.insert(3, 6);
